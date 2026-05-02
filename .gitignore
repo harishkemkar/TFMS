@@ -1,0 +1,33 @@
+# Ignore Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environments
+venv/
+.env/
+
+# Ignore logs
+*.log
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore build and distribution directories
+build/
+dist/
+*.egg-info/
+
+# Ignore Docker artifacts
+*.tar
+*.pid
+
+# Ignore IDE/editor settings
+.vscode/
+.idea/
+
+# Ignore TFMS_INFRA directory
+TFMS_INFRA/
+

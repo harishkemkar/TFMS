@@ -1,0 +1,43 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.env/
+
+# Logs
+*.log
+logs/
+
+# AWS credentials or local configs
+.aws/
+*.pem
+
+# Terraform state and cache
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# Model binaries (large files)
+*.joblib
+*.pkl
+
+# Data files (avoid committing large datasets)
+*.csv
+*.tsv
+*.jsonl
+
+# IDE/editor configs
+.vscode/
+.idea/
+
+# Docker artifacts
+*.dockerfile
+*.tar
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+

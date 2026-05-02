@@ -1,0 +1,7 @@
+boto3
+pandas
+numpy
+scipy
+scikit-learn
+joblib
+imbalanced-learn
