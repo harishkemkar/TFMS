@@ -2,7 +2,7 @@ pipeline {
     agent { label 'ec2-agent' }
 
     environment {
-        AWS_REGION = 'ap-south-1'
+        AWS_REGION = 'ap-southeast-1'
         ECR_REPO   = 'tfms-consumer'
         IMAGE_TAG  = "${env.BUILD_NUMBER}"
         ACCOUNT_ID = '445842911672'
