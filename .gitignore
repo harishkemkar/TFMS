@@ -31,3 +31,9 @@ dist/
 # Ignore TFMS_INFRA directory
 TFMS_INFRA/
 
+# Ignore Producer folder
+Producer/
+
+# Ignore specific files
+runner.py
+test_model.py
