@@ -10,7 +10,8 @@ firehose = boto3.client("firehose", region_name="ap-southeast-1")
 DELIVERY_STREAM_NAME = "TFMS_transaction_firehose"
 
 # Define file path and file name separately
-FILE_PATH = r"C:\HarishKemkar\local_repo\projects\Transactional Fraud Management Syetem\TFMS"   # adjust to your folder
+FILE_PATH = r"C:\HarishKemkar\local_repo\projects\Transactional Fraud Management Syetem"   # adjust to your folder
+
 FILE_NAME = "creditcard.csv"
 
 def send_to_firehose(file_path, file_name):
