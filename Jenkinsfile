@@ -4,7 +4,6 @@ pipeline {
     environment {
         AWS_REGION = 'ap-southeast-1'
         ECR_REPO   = 'tfms-consumer'
-        IMAGE_TAG  = "${env.BUILD_NUMBER}"
         ACCOUNT_ID = '445842911672'
     }
 
@@ -30,8 +29,8 @@ pipeline {
             steps {
                 script {
                     sh """
-                    docker build -t ${ECR_REPO}:${IMAGE_TAG} .
-                    docker tag ${ECR_REPO}:${IMAGE_TAG} ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}
+                    docker build -t ${ECR_REPO}:latest .
+                    docker tag ${ECR_REPO}:latest ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:latest
                     """
                 }
             }
@@ -41,7 +40,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    docker push ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}
+                    docker push ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:latest
                     """
                 }
             }
@@ -50,7 +49,7 @@ pipeline {
 
     post {
         success {
-            echo "Image pushed: ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"
+            echo "Image pushed: ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:latest"
         }
         failure {
             echo "Pipeline failed!"
