@@ -43,6 +43,8 @@ def main():
 
     # Process records
     enriched = process_records(raw_data, MODEL_PATH)
+    print(f"Processed {len(enriched)} records in batch.")
+
 
     # Write results
     write_results(PROCESSED_BUCKET, out_key, enriched)

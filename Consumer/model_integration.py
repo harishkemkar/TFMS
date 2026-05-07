@@ -22,27 +22,64 @@ def preprocess_row(row):
         "is_business_hours_proxy": int(9 <= hour < 18)
     }
 
+# working as of 07May2025
+# def process_records(raw_data, model_path):
+#     model = joblib.load(model_path)
+#     records = raw_data.split("}{")
+#     records = [r if r.startswith("{") else "{" + r for r in records]
+#     records = [r if r.endswith("}") else r + "}" for r in records]
+
+#     enriched = []
+#     for i, rec in enumerate(records, start=1):
+#         row = json.loads(rec)
+#         features = preprocess_row(row)
+#         X_row = pd.DataFrame([features], columns=EXPECTED_FEATURES)
+
+#         pred = model.predict(X_row)[0]
+#         prob = model.predict_proba(X_row)[0][1]
+
+#         row["Predicted_Class"] = int(pred)
+#         row["Predicted_Label"] = "Fraud" if pred == 1 else "Non-Fraud"
+#         row["Fraud_Probability"] = float(prob)
+#         enriched.append(row)
+
+#         if i % 100 == 0:
+#             print(f"Processed {i} records...")
+
+#     return enriched
+
+
+# New to process records in batches  as of 07May2025
+
 def process_records(raw_data, model_path):
+    # Load the trained model
     model = joblib.load(model_path)
+
+    # Split concatenated JSONs into individual records
     records = raw_data.split("}{")
     records = [r if r.startswith("{") else "{" + r for r in records]
     records = [r if r.endswith("}") else r + "}" for r in records]
 
+    # Parse all records into Python dicts
+    rows = [json.loads(rec) for rec in records]
+
+    # Preprocess all rows into feature dicts
+    features_list = [preprocess_row(row) for row in rows]
+
+    # Convert to a single DataFrame
+    X = pd.DataFrame(features_list, columns=EXPECTED_FEATURES)
+
+    # Run predictions in batch
+    preds = model.predict(X)
+    probs = model.predict_proba(X)[:, 1]  # probability of fraud (class 1)
+
+    # Enrich each row with prediction results
     enriched = []
-    for i, rec in enumerate(records, start=1):
-        row = json.loads(rec)
-        features = preprocess_row(row)
-        X_row = pd.DataFrame([features], columns=EXPECTED_FEATURES)
-
-        pred = model.predict(X_row)[0]
-        prob = model.predict_proba(X_row)[0][1]
-
+    for row, pred, prob in zip(rows, preds, probs):
         row["Predicted_Class"] = int(pred)
         row["Predicted_Label"] = "Fraud" if pred == 1 else "Non-Fraud"
         row["Fraud_Probability"] = float(prob)
         enriched.append(row)
 
-        if i % 100 == 0:
-            print(f"Processed {i} records...")
-
+    print(f"✅ Processed {len(enriched)} records in batch.")
     return enriched
